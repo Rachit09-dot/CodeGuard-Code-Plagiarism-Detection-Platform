@@ -1,0 +1,9 @@
+{
+  "name": "code-plagiarism-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "python -m http.server 3000 --directory frontend",
+    "serve": "python -m http.server 3000 --directory frontend"
+  }
+}
