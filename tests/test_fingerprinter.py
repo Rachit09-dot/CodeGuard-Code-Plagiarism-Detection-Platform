@@ -8,7 +8,6 @@ Verifies:
 * Fingerprint is deterministic.
 """
 
-import pytest
 from core.fingerprinter import build_fingerprint
 from core.normalizer import normalize_code
 

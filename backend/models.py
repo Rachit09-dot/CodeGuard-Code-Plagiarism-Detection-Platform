@@ -66,7 +66,7 @@ class Submission(Base):
     filename = Column(String, nullable=False)
     language = Column(String, default="python")
     content = Column(Text, nullable=False)
-    content_hash = Column(String(64), nullable=True, index=True)  # SHA-256 hex
+    content_hash = Column(String(64), nullable=False, index=True)  # SHA-256 hex
     uploaded_at = Column(DateTime, default=_utcnow)
     analysis_status = Column(String, default="pending")
 

@@ -8,7 +8,6 @@ temporary storage directory, making them safe to run from any environment.
 
 from __future__ import annotations
 
-import pytest
 
 
 # ---------------------------------------------------------------------------

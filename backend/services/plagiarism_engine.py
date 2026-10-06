@@ -29,13 +29,8 @@ from typing import Any
 from core import (
     AnalysisService,
     SubmissionResult,
-    ast_similarity,
-    build_fingerprint,
-    containment_similarity,
-    jaccard_similarity,
-    normalize_code,
 )
-from core.config import DEFAULT_K, DEFAULT_THRESHOLD, DEFAULT_WINDOW, TOKEN_WEIGHT, AST_WEIGHT, HIGHLIGHT_MATCH_CAP
+from core.config import DEFAULT_K, DEFAULT_THRESHOLD, HIGHLIGHT_MATCH_CAP
 
 __all__ = [
     "prepare_submission",
@@ -208,10 +203,10 @@ def find_matching_regions(left_code: str, right_code: str) -> dict[str, Any]:
     left_sorted = sorted(left_matched_lines)
     right_sorted = sorted(right_matched_lines)
     matches: list[dict[str, int]] = []
-    for i, (l, r) in enumerate(zip(left_sorted, right_sorted)):
+    for i, (left_ln, right_ln) in enumerate(zip(left_sorted, right_sorted)):
         if i >= HIGHLIGHT_MATCH_CAP:
             break
-        matches.append({"left": l, "right": r})
+        matches.append({"left": left_ln, "right": right_ln})
 
     return {
         "left_lines": left_lines,

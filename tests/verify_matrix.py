@@ -1,11 +1,14 @@
 """Final verification matrix — algorithm correctness and security spot-checks."""
+
+import hashlib
 import sys
 
-from core.normalizer import normalize_code
-from core.fingerprinter import build_fingerprint
-from core.similarity import jaccard_similarity, containment_similarity
+from core.analysis_service import AnalysisService
 from core.ast_similarity import ast_similarity
 from core.config import DEFAULT_K, DEFAULT_WINDOW, TOKEN_WEIGHT, AST_WEIGHT
+from core.fingerprinter import build_fingerprint
+from core.normalizer import normalize_code
+from core.similarity import containment_similarity, jaccard_similarity
 
 results = []
 
@@ -46,7 +49,6 @@ check("AST similarity renamed vars >= 0.8", ast_score >= 0.8, f"got {ast_score:.
 print("\n=== Robustness ===")
 
 # Invalid Python per-file
-from core.analysis_service import AnalysisService
 svc = AnalysisService()
 res_bad = svc.prepare_submission("bad.py", "def f(:\n    bad syntax")
 check("invalid Python -> status=invalid_source", res_bad.status == "invalid_source", res_bad.status)
@@ -67,7 +69,6 @@ norm_b = max(a_id, b_id)
 check("pair normalization: min/max ordering", norm_a == 3 and norm_b == 5, f"({norm_a},{norm_b})")
 
 print("\n=== Security ===")
-from pathlib import Path
 bad_names = ["../../evil.py", "/etc/passwd.py", "..\\..\\windows.py", "sub/dir/file.py"]
 for name in bad_names:
     has_traversal = "/" in name or "\\" in name or name in {".", ".."}
@@ -80,7 +81,6 @@ check("TOKEN_WEIGHT + AST_WEIGHT == 1.0", abs(TOKEN_WEIGHT + AST_WEIGHT - 1.0) <
       f"{TOKEN_WEIGHT}+{AST_WEIGHT}={TOKEN_WEIGHT+AST_WEIGHT}")
 
 print("\n=== SHA-256 ===")
-import hashlib
 content = b"def f(x):\n    return x\n"
 h = hashlib.sha256(content).hexdigest()
 check("SHA-256 hash is 64 hex chars", len(h) == 64, f"len={len(h)}")
