@@ -14,3 +14,10 @@ venv/
 coverage/
 .pytest_cache/
 .DS_Store
+
+# Uploaded file storage (runtime data — not source code)
+storage/
+
+# Alembic temp files
+migrations/__pycache__/
+migrations/versions/__pycache__/

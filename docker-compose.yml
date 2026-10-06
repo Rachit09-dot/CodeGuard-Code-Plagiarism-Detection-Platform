@@ -1,5 +1,9 @@
 version: "3.9"
+
 services:
+  # ------------------------------------------------------------------ #
+  #  PostgreSQL                                                          #
+  # ------------------------------------------------------------------ #
   postgres:
     image: postgres:15
     container_name: plagiarism-postgres
@@ -9,9 +13,52 @@ services:
       POSTGRES_USER: plagiarism
       POSTGRES_PASSWORD: plagiarism123
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U plagiarism -d plagiarism_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ------------------------------------------------------------------ #
+  #  FastAPI backend                                                     #
+  # ------------------------------------------------------------------ #
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: plagiarism-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg2://plagiarism:plagiarism123@postgres:5432/plagiarism_db
+      UPLOAD_DIR: /app/storage
+      ALLOWED_ORIGINS: "http://localhost:5173,http://localhost:3000,http://frontend:5173"
+    ports:
+      - "8000:8000"
+    volumes:
+      - storage_data:/app/storage
+
+  # ------------------------------------------------------------------ #
+  #  React + Vite frontend                                              #
+  # ------------------------------------------------------------------ #
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: plagiarism-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
 
 volumes:
   postgres_data:
+  storage_data:

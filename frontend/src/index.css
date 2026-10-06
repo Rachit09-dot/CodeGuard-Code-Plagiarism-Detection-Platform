@@ -224,3 +224,83 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Additions for v2 ---- */
+
+.status-box.error {
+  border-left: 4px solid #f87171;
+  color: #fca5a5;
+}
+
+.summary-card.highlight {
+  border-color: #f87171;
+}
+
+.empty-state {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Flexible pair-row: auto columns so extra pills wrap naturally */
+.pair-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.pair-row button {
+  flex: 1 1 220px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metric-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.35);
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.metric-pill.warn {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+.alert.low {
+  color: #4ade80;
+}
+
+.comparison-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.comparison-metrics span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(30, 41, 59, 0.9);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+}
+
+.comparison-explanation {
+  color: #94a3b8;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.9rem;
+}
+
+.line-num {
+  display: inline-block;
+  width: 2.5rem;
+  color: #475569;
+  user-select: none;
+  font-size: 0.8rem;
+}
